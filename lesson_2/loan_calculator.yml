@@ -1,0 +1,12 @@
+greeting: "Welcome to loan calculator. Please enter your information to find your monthly payment details"
+loan_ammount: "What is the loan ammount?"
+not_valid_number: "The number you entered is not a valid number, please try again"
+interest_rate: "What percent interest is the loan?"
+loan_duration: "What is the duration of the loan in years"
+duration_months: "Your loan duration in months is"
+monthly_rate: "Your monthly interest rate precentage is"
+payment: "And your monthly payment is"
+go_again?: "Type \"Y\" if you would like to calculate another loan"
+
+
+
