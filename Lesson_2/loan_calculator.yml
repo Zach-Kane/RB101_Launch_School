@@ -1,0 +1,11 @@
+welcome: "Welcome to Loan Calculator! Enter your name please:"
+
+loan_ammount: "Please enter the loan ammount."
+
+interest_rate: "Please enter the interest rate."
+
+loan_length: "Plese enter the length of the loan in years."
+
+not_valid_number: "Not a vaild number."
+
+monthly_payments: "Your monthly payments will be:"
