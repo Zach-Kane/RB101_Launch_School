@@ -1,6 +1,6 @@
 require 'yaml'
 MS = YAML.load_file('loan_calculator.yml')
-require 'pry'
+
 def prompt(input)
   puts "=> #{input}"
 end
@@ -61,5 +61,8 @@ monthly_interest_rate = (interest_rate.to_f / 100) / 12
 loan_duration_months = loan_length.to_i * 12
 
 monthly_payment = monthly_payments(ammount, monthly_interest_rate, loan_duration_months)
-#binding.pry
+
+total_ammount = monthly_payment * loan_duration_months
+
 prompt("#{MS['monthly_payments']}#{monthly_payment.round(2)}")
+prompt("#{MS['total_ammount']}#{total_ammount.round(3)}")
