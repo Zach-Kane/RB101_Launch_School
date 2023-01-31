@@ -1,0 +1,19 @@
+adding: "Adding"
+subtracting: "Subtracting"
+multiplying: "Multiplying"
+dividing: "Dividing"
+
+welcome: "Welcome to Calculator! Enter your name please:"
+valid_name: "Please make sure to enter a valid name."
+first_number: "What's the first number?"
+not_valid_number: "Please give us a real number"
+second_number: "What's the second number?"
+operator_prompt: 
+  "What operation would you like to perform?\n
+  1) Add\n
+  2) Subtract\n
+  3) Multiply\n
+  4) Divide"
+result: "The Result is"
+go_again: "Press \"Y\" if you would like to calculate more numbers!"
+goodbye: "Thanks for calculating with us, have a pleasant day."
