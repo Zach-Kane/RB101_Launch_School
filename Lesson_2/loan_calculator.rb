@@ -62,4 +62,4 @@ loan_duration_months = loan_length.to_i * 12
 
 monthly_payment = monthly_payments(ammount, monthly_interest_rate, loan_duration_months)
 #binding.pry
-prompt("#{MS['monthly_payments']}#{monthly_payment}")
+prompt("#{MS['monthly_payments']}#{monthly_payment.round(2)}")

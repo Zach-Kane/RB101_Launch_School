@@ -8,4 +8,4 @@ loan_length: "Plese enter the length of the loan in years."
 
 not_valid_number: "Not a vaild number."
 
-monthly_payments: "Your monthly payments will be:"
+monthly_payments: "Your monthly payments will be: $ "
