@@ -4,11 +4,11 @@ VALID_CHOICES = {
 }
 
 WINNING_COMBOS = {
-  'scissors' => { 'paper' => 'win', 'lizard' => 'win' },
-  'paper' => { 'rock' => 'win', 'spock' => 'win' },
-  'rock' => { 'lizard' => 'win', 'scissors' => 'win' },
-  'lizard' => { 'spock' => 'win', 'paper' => 'win' },
-  'spock' => { 'scissors' => 'win', 'rock' => 'win' }
+  'scissors' => ['paper', 'lizard' ],
+  'paper' => [ 'rock', 'spock' ],
+  'rock' => [ 'lizard', 'scissors' ],
+  'lizard' => [ 'spock', 'paper' ],
+  'spock' => [ 'scissors', 'rock' ]
 }
 
 def prompt(message)
@@ -16,9 +16,9 @@ def prompt(message)
 end
 
 def winner?(player, computer, winning_combos)
-  if winning_combos[player].key?(computer)
+  if winning_combos[player].include?(computer)
     1
-  elsif winning_combos[computer].key?(player)
+  elsif winning_combos[computer].include?(player)
     2
   else
     3
@@ -36,18 +36,27 @@ def display_winner(winner)
   end
 end
 
-def display_score(win, lose, tie)
-  prompt("Win = #{win}")
-  prompt("Lose = #{lose}")
-  prompt("Tie = #{tie}")
+def update_score(winner,score)
+  case winner
+  when 1
+    score[0] += 1
+  when 2
+    score[1] += 1
+  when 3
+    score[2] += 1
+  end
+end
+
+def display_score(score)
+  prompt("Win = #{score[0]}")
+  prompt("Lose = #{score[1]}")
+  prompt("Tie = #{score[2]}")
 end
 
 system('clear')
 
 loop do
-  win = 0
-  lose = 0
-  tie = 0
+  score = [0,0,0]
 
   prompt("Welcome to rock, paper, scissors, spock, lizard:")
 
@@ -75,18 +84,11 @@ loop do
 
     display_winner(winner)
 
-    case winner
-    when 1
-      win += 1
-    when 2
-      lose += 1
-    when 3
-      tie += 1
-    end
+    update_score(winner,score)
 
-    display_score(win, lose, tie)
+    display_score(score)
 
-    break if win == 3 || lose == 3
+    break if score[0] == 3 || score[1] == 3
   end
 
   prompt("Do you want to play again?")
