@@ -1,15 +1,20 @@
-VALID_CHOICES = [ 'rock', 'paper', 'scissors', 'spock', 'lizard' ]
+VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
 
 WINNING_COMBOS = {
-  'scissors' => [ 'paper', 'lizard' ],
-  'paper' => [ 'rock', 'spock' ],
-  'rock' => [ 'lizard', 'scissors' ],
-  'lizard' => [ 'spock', 'paper' ],
-  'spock' => [ 'scissors', 'rock' ]
+  'scissors' => ['paper', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'rock' => ['lizard', 'scissors'],
+  'lizard' => ['spock', 'paper'],
+  'spock' => ['scissors', 'rock']
 }
 
 def prompt(message)
   puts "=> #{message}"
+end
+
+def convert_input(valid_choices, input)
+  choice = valid_choices.select { |name| name.start_with?(input) }
+  choice.join
 end
 
 def winner?(player, computer, winning_combos)
@@ -33,7 +38,7 @@ def display_winner(winner)
   end
 end
 
-def update_score(winner,score)
+def update_score(winner, score)
   case winner
   when 1
     score[0] += 1
@@ -50,10 +55,9 @@ def display_score(score)
   prompt("Tie = #{score[2]}")
 end
 
-system('clear')
-
 loop do
-  score = [0,0,0]
+  system('clear')
+  score = [0, 0, 0]
 
   prompt("Welcome to rock, paper, scissors, spock, lizard:")
 
@@ -62,10 +66,12 @@ loop do
 
     loop do
       prompt("Please make a choice:")
-      prompt("#{VALID_CHOICES}")
-      choice = gets.chomp
+      prompt("Enter the fist two charaters if you prefer:")
+      prompt("#{VALID_CHOICES.join(', ')}")
+      input = gets.chomp
+      choice = convert_input(VALID_CHOICES, input)
 
-      if VALID_CHOICES.any?(choice)
+      if VALID_CHOICES.any?(choice) && input.length > 1
         break
       else
         prompt("That's not a valid choice.")
@@ -80,7 +86,7 @@ loop do
 
     display_winner(winner)
 
-    update_score(winner,score)
+    update_score(winner, score)
 
     display_score(score)
 
