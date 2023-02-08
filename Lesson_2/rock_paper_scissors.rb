@@ -1,10 +1,7 @@
-VALID_CHOICES = {
-  1 => 'rock', 2 => 'paper', 3 => 'scissors',
-  4 => 'spock', 5 => 'lizard'
-}
+VALID_CHOICES = [ 'rock', 'paper', 'scissors', 'spock', 'lizard' ]
 
 WINNING_COMBOS = {
-  'scissors' => ['paper', 'lizard' ],
+  'scissors' => [ 'paper', 'lizard' ],
   'paper' => [ 'rock', 'spock' ],
   'rock' => [ 'lizard', 'scissors' ],
   'lizard' => [ 'spock', 'paper' ],
@@ -65,18 +62,17 @@ loop do
 
     loop do
       prompt("Please make a choice:")
-      VALID_CHOICES.each_pair { |k, v| puts "#{k} #{v}" }
-      input = gets.chomp.to_i
-      choice = VALID_CHOICES[input]
+      prompt("#{VALID_CHOICES}")
+      choice = gets.chomp
 
-      if VALID_CHOICES.key?(input)
+      if VALID_CHOICES.any?(choice)
         break
       else
         prompt("That's not a valid choice.")
       end
     end
 
-    computer_choice = VALID_CHOICES[[*1..5].sample]
+    computer_choice = VALID_CHOICES.sample
 
     prompt("You chose => #{choice}; Computer chose => #{computer_choice}")
 
