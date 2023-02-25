@@ -2,14 +2,12 @@ require 'yaml'
 
 MSG = YAML.load_file('rps_bonus_features.yml')
 
-VALID_CHOICES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
-
-WINNING_COMBOS = {
-  'scissors' => ['paper', 'lizard'],
-  'paper' => ['rock', 'spock'],
-  'rock' => ['lizard', 'scissors'],
-  'lizard' => ['spock', 'paper'],
-  'spock' => ['scissors', 'rock']
+MOVES = {
+  'rock' => { abv: 'r', beats: ['scissors', 'lizard']},
+  'lizard' => { abv: 'l', beats: ['spock', 'paper']},
+  'spock' => { abv: 'sp', beats: ['scissors', 'rock']},
+  'paper' => { abv: 'p', beats: ['spock', 'rock']},
+  'scissors' => { abv: 'sc', beats: ['paper', 'lizard']}
 }
 
 def prompt(message)
@@ -27,18 +25,39 @@ def banner(text)
   puts top_bottom
 end
 
-def convert_input(valid_choices, choice_input)
-  valid_choices.select { |name| name.start_with?(choice_input) }.join
+def get_choice
+  prompt(MSG['choice'])
+  prompt("#{MOVES.keys.join(', ')} ")
+  prompt(MSG['characters'])
+  gets.chomp.downcase
 end
 
-def valid_choice(choice, choice_input)
-  VALID_CHOICES.any?(choice) && choice_input.length > 1
+def convert_input(choice_input)
+  (MOVES.map { |k, v| k if v[:abv] == choice_input }).join
 end
 
-def winner?(player, computer, winning_combos)
-  if winning_combos[player].include?(computer)
+def valid_choice?(choice_input)
+  MOVES.key?(convert_input(choice_input)) ||
+    MOVES.key?(choice_input)
+end
+
+def which_choice?(choice_input)
+  if choice_input.length < 3
+    convert_input(choice_input)
+  else
+    choice_input
+  end
+end
+
+def display_choices(choice, computer_choice)
+  prompt("You chose => #{choice}")
+  prompt("Computer chose => #{computer_choice}")
+end
+
+def winner?(player, computer)
+  if MOVES[player][:beats].include?(computer)
     1
-  elsif winning_combos[computer].include?(player)
+  elsif MOVES[computer][:beats].include?(player)
     2
   else
     3
@@ -59,22 +78,22 @@ end
 def update_score(winner, score)
   case winner
   when 1
-    score[0] += 1
+    score[:player] += 1
   when 2
-    score[1] += 1
+    score[:computer] += 1
   when 3
-    score[2] += 1
+    score[:tie] += 1
   end
 end
 
 def display_score(score)
-  prompt("Win = #{score[0]}")
-  prompt("Lose = #{score[1]}")
-  prompt("Tie = #{score[2]}")
+  prompt("Win = #{score[:player]}")
+  prompt("Lose = #{score[:computer]}")
+  prompt("Tie = #{score[:tie]}")
 end
 
 def round_winner(score)
-  if score[0] == 3
+  if score[:player] == 3
     banner(MSG['winner'])
   else
     banner(MSG['loser'])
@@ -82,23 +101,29 @@ def round_winner(score)
 end
 
 def round_totals(score, round_total)
-  if score[0] == 3
-    round_total[0] += 1
-  elsif score[1] == 3
-    round_total[1] += 1
+  if score[:player] == 3
+    round_total[:player] += 1
+  elsif score[:computer] == 3
+    round_total[:computer] += 1
   end
 end
 
 def display_round_totals(round_total)
-  prompt("Round Totals: You = #{round_total[0]} Computer = #{round_total[1]}")
+  prompt("Round Totals: You = #{round_total[:player]}" \
+     " Computer = #{round_total[:computer]}")
 end
 
-round_total = [0, 0]
+def play_again?
+  prompt(MSG['play_again'])
+  gets.chomp.downcase
+end
+
+round_total = { player: 0, computer: 0 }
 
 loop do
   system('clear')
 
-  score = [0, 0, 0]
+  score = { player: 0, computer: 0, tie: 0 }
 
   banner(MSG['welcome'])
 
@@ -106,24 +131,20 @@ loop do
     choice = ''
 
     loop do
-      prompt(MSG['choice'])
-      prompt("#{VALID_CHOICES.join(', ')} ")
-      prompt(MSG['characters'])
-      choice_input = gets.chomp.downcase
+      choice_input = get_choice
 
-      choice = convert_input(VALID_CHOICES, choice_input)
+      choice = which_choice?(choice_input)
 
-      valid_choice(choice, choice_input) ? break : prompt(MSG['not_valid'])
+      valid_choice?(choice_input) ? break : prompt(MSG['not_valid'])
     end
 
-    computer_choice = VALID_CHOICES.sample
+    computer_choice = MOVES.keys.sample
 
     system('clear')
 
-    prompt("You chose => #{choice}")
-    prompt("Computer chose => #{computer_choice}")
+    display_choices(choice, computer_choice)
 
-    winner = winner?(choice, computer_choice, WINNING_COMBOS)
+    winner = winner?(choice, computer_choice)
 
     display_winner(winner)
 
@@ -131,7 +152,7 @@ loop do
 
     display_score(score)
 
-    break if score[0] == 3 || score[1] == 3
+    break if score[:player] == 3 || score[:computer] == 3
   end
 
   round_winner(score)
@@ -140,10 +161,15 @@ loop do
 
   display_round_totals(round_total)
 
-  prompt(MSG['play_again'])
-  answer = gets.chomp
+  answer = ''
 
-  break unless answer.downcase.start_with?('y')
+  loop do
+    answer = play_again?
+
+    ['yes', 'y', 'no', 'n'].any?(answer) ? break : prompt(MSG['try_again'])
+  end
+
+  break unless ['yes', 'y'].any?(answer)
 end
 
 prompt(MSG['thanks'])

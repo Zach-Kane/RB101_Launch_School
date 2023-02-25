@@ -2,7 +2,7 @@ welcome: "Welcome to Rock, Paper, Scissors, Spock, Lizard:"
 
 choice: "Please make a choice:"
 
-characters: "You may enter the first two characters if you prefer."
+characters: "You may enter the first character or two characters for scissors or spock"
 
 not_valid: "That's not a valid choice."
 
@@ -16,6 +16,8 @@ winner: "You have won this round!!"
 
 loser: "You have lost this round!!"
 
-play_again: "Would you like to play again? (y/n)"
+play_again: "Would you like to play again? (yes/no)"
+
+try_again: "Sorry I didn't understand your input. Please try again."
 
 thanks: "Thanks for playing!! Good Bye."
