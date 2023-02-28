@@ -2,7 +2,7 @@ welcome: "Welcome to Rock, Paper, Scissors, Spock, Lizard:"
 
 choice: "Please make a choice:"
 
-characters: "You may enter the first character or two characters for scissors or spock"
+characters: "You may enter the first character or two characters for scissors or spock."
 
 not_valid: "That's not a valid choice."
 
